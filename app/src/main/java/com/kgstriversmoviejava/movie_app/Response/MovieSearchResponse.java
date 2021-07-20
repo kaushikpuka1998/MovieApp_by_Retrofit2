@@ -10,7 +10,7 @@ import java.util.List;
 //getting multiple movie(Movies List)
 public class MovieSearchResponse {
 
-    @SerializedName("total_results")
+    @SerializedName("total_results") //Serialized due to I have to search the total_results from the JSON output
     @Expose()
     private int total_count;
 

@@ -3,7 +3,7 @@ package com.kgstriversmoviejava.movie_app.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class MovieModel implements Parcelable {
+public class MovieModel implements Parcelable { //here parcelable used due to pass the data to another activity
 
     private String title;
     private String poster_path;
@@ -13,6 +13,8 @@ public class MovieModel implements Parcelable {
     private  String overview;
 
 
+
+    //Constructor
     public MovieModel(String title, String poster_path, String release_date, int popularity, float vote_average, String overview) {
         this.title = title;
         this.poster_path = poster_path;
@@ -44,6 +46,9 @@ public class MovieModel implements Parcelable {
         }
     };
 
+
+
+    //getter
     public String getTitle() {
         return title;
     }

@@ -34,7 +34,8 @@ public class MovieActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetRetrofitResponse();
+                //GetRetrofitResponse();
+                GetRetrofitResponsebymovieId();
             }
 
 
@@ -48,7 +49,7 @@ public class MovieActivity extends AppCompatActivity {
 
         MovieApi movieApi = Servicey.getMovieApi();
 
-        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Creden.API_KEY,"Action");
+        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Creden.API_KEY,"Action","1");
 
 
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
@@ -83,6 +84,47 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
                 t.printStackTrace();
+
+            }
+        });
+    }
+
+
+    private void GetRetrofitResponsebymovieId()
+    {
+        MovieApi movieApi = Servicey.getMovieApi();
+
+        Call<MovieModel> responseCall = movieApi.getMovie(
+                565,
+               Creden.API_KEY
+        );
+
+
+        responseCall.enqueue(new Callback<MovieModel>() {
+            @Override
+            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+
+                if(response.code() == 200)
+                {
+                    MovieModel movies = response.body();
+
+                    Log.v("TAG FOR ID:====>","The Response id: " +movies.getTitle());
+                }
+                else
+                {
+                    try {
+                        Log.v("TAG FOR ID:====>","Error: " +response.errorBody());
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieModel> call, Throwable t) {
+
 
             }
         });
