@@ -64,7 +64,7 @@ public class MovieActivity extends AppCompatActivity {
 
         MovieApi movieApi = Servicey.getMovieApi();
 
-        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Creden.API_KEY,"Action","1");
+        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(Creden.API_KEY,"Action",1);
 
 
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
