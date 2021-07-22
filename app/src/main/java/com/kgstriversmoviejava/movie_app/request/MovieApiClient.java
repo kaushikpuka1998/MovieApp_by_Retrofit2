@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.kgstriversmoviejava.movie_app.AppExecutor;
+import com.kgstriversmoviejava.movie_app.AppExecutors;
 import com.kgstriversmoviejava.movie_app.Model.MovieModel;
 import com.kgstriversmoviejava.movie_app.Response.MovieSearchResponse;
 import com.kgstriversmoviejava.movie_app.Utils.Creden;
@@ -61,20 +61,17 @@ public class MovieApiClient {
         }
 
         retrivemoviesRunnable = new RetrivemoviesRunnable(query,pageNumber);
-        final Future myHandler = AppExecutor.getInstance().netWorkIO().submit(new Runnable() {
-            @Override
-            public void run() {
-                //retrive the data from Retrofit API
-            }
-        });
+        final Future myHandler = AppExecutors.getInstance().netWorkIO().submit(retrivemoviesRunnable);
+
+
         //Not to crash (ANR reducing)the retrofit call that's why using another executor for cancelling that
-        AppExecutor.getInstance().netWorkIO().schedule(new Runnable() {
+        AppExecutors.getInstance().netWorkIO().schedule(new Runnable() {
             @Override
             public void run() {
               //Cancelling the Retrofit Call
                 myHandler.cancel(true);
             }
-        },5000, TimeUnit.MICROSECONDS);
+        },2000, TimeUnit.MILLISECONDS);
 
 
     }
@@ -94,7 +91,7 @@ public class MovieApiClient {
         public RetrivemoviesRunnable(String query, int pageNumber) {
             this.query = query;
             this.pageNumber = pageNumber;
-            this.cancelrequest = false;
+            cancelrequest = false;
         }
 
         @Override
@@ -123,12 +120,12 @@ public class MovieApiClient {
                     {
                         List<MovieModel> currentmovies  = mMovies.getValue();
                         currentmovies.addAll(list);
-                        mMovies.postValue(list);
+                        mMovies.postValue(currentmovies);
                     }
                 }
                 else
                 {
-                    String error = response.errorBody().toString();
+                    String error = response.errorBody().string();
                     Log.v("Tag:","Error:"+error);
 
                     mMovies.postValue(null);

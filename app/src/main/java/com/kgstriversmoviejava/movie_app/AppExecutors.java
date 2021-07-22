@@ -4,15 +4,15 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class AppExecutor {
+public class AppExecutors {
 
 
-    private static AppExecutor instance;
+    private static AppExecutors instance;
 
-    public static AppExecutor getInstance(){
+    public static AppExecutors getInstance(){
         if(instance == null)
         {
-            instance = new AppExecutor();
+            instance = new AppExecutors();
         }
 
         return instance;

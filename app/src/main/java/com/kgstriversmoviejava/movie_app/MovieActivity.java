@@ -36,11 +36,13 @@ public class MovieActivity extends AppCompatActivity {
         btn = findViewById(R.id.btncheck);
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
+        observeAnyChange();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //GetRetrofitResponse();
-                GetRetrofitResponsebymovieId();
+                //GetRetrofitResponsebymovieId();
+                searchMovieApi("Fast",1);
             }
 
 
@@ -53,12 +55,22 @@ public class MovieActivity extends AppCompatActivity {
 
     private void observeAnyChange()
     {
-        movieListViewModel.getmovies().observe(this, new Observer<List<MovieModel>>() {
-            @Override
-            public void onChanged(List<MovieModel> movieModels) {
-
+        movieListViewModel.getmovies().observe(this, movieModels -> {
+            if(movieModels!=null)
+            {
+                for(MovieModel movieModel : movieModels)
+                {
+                    Log.v("Tag:","Onchanged:"+movieModel.getTitle()+","+movieModel.getRelease_date());
+                }
             }
         });
+    }
+
+
+    //Now mention to the top of the architecture to query
+    private void searchMovieApi(String query,int pageNumber)
+    {
+        movieListViewModel.searchMovieApi(query,pageNumber);
     }
     private void GetRetrofitResponse() {
 
